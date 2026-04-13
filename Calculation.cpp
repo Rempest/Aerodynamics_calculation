@@ -1,95 +1,46 @@
 #include <iostream>
 #include <cmath>
+#include "AerodynamicsCalculation.h"
 using namespace std;
 
-class AerodynamicsCalculation {
-public:
-    double CL, p = 1.2, v, T = 0, W = 0, L, D, S, g = 9.8, CT, w, CD, m;
-    char self;
+double AerodynamicsCalculation::calculateLift() {
+    return CL * 0.5 * p * pow(v, 2) * S;
+}
 
-    void run() {
-        cout << "What do you want to find? (W, T, D, L): ";
-        cin >> self;
+double AerodynamicsCalculation::calculateDrag() {
+    return CD * 0.5 * p * pow(v, 2) * S;
+}
 
-        if (self == 'L') {
-            cout << "Enter the data:\n";
+double AerodynamicsCalculation::calculateThrust() {
+    return CT * pow(w, 2);
+}
 
-            cout << "CL: ";
-            cin >> CL;
+double AerodynamicsCalculation::calculateWeight() {
+    return m * g;
+}
 
-            cout << "V: ";
-            cin >> v;
+void AerodynamicsCalculation::run() {
+    cout << "What do you want to find? (W, T, D, L): ";
+    cin >> self;
 
-            cout << "p: ";
-            cin >> p;
-
-            cout << "S: ";
-            cin >> S;
-
-            L = CL * 0.5 * p * pow(v, 2) * S;
-
-            cout << "Lift (L) = " << L << endl;
-        }
-
-        else if (self == 'T') {
-            cout << "CT: ";
-            cin >> CT;
-
-            cout << "w: ";
-            cin >> w;
-
-            T = CT * pow(w, 2);
-
-            cout << "Thrust (T) = " << T << endl;
-        }
-
-        else if (self == 'D') {
-            cout << "CD: ";
-            cin >> CD;
-
-            cout << "V: ";
-            cin >> v;
-
-            cout << "p: ";
-            cin >> p;
-
-            cout << "S: ";
-            cin >> S;
-
-            D = CD * 0.5 * p * pow(v, 2) * S;
-
-            cout << "Drag (D) = " << D << endl;
-        }
-
-        else if (self == 'W') {
-            cout << "m: ";
-            cin >> m;
-
-            W = m * g;
-
-            cout << "Weight (W) = " << W << endl;
-        }
-
-        else {
-            cout << "Invalid input!" << endl;
-        }
-
-        if (T > 0 && W > 0) {
-            if (T > W) {
-                cout << "UAV takes off!" << endl;
-            }
-            else if (T == W) {
-                cout << "UAV hovers!" << endl;
-            }
-            else {
-                cout << "UAV falls!" << endl;
-            }
-        }
+    if (self == 'L') {
+        cin >> CL >> v >> p >> S;
+        L = calculateLift();
+        cout << "L = " << L << endl;
     }
-};
-
-int main() {
-    AerodynamicsCalculation UAV;
-    UAV.run();
-    return 0;
+    else if (self == 'T') {
+        cin >> CT >> w;
+        T = calculateThrust();
+        cout << "T = " << T << endl;
+    }
+    else if (self == 'D') {
+        cin >> CD >> v >> p >> S;
+        D = calculateDrag();
+        cout << "D = " << D << endl;
+    }
+    else if (self == 'W') {
+        cin >> m;
+        W = calculateWeight();
+        cout << "W = " << W << endl;
+    }
 }
