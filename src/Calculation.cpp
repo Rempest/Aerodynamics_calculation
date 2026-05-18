@@ -1,4 +1,4 @@
-#include "AerodynamicsCalculation.h"
+#include "Aerodynamics_Calculation.h"
 #include <cmath>
 AerodynamicsCalculation::AerodynamicsCalculation(
     double CL, double CD, double CT,
